@@ -1,0 +1,5 @@
+rootProject.name = 'MicroservicesCoursework'
+
+include 'common'
+include 'service-discovery'
+include 'seizure-info'
