@@ -2,4 +2,5 @@ rootProject.name = 'MicroservicesCoursework'
 
 include 'common'
 include 'service-discovery'
+include 'gateway'
 include 'seizure-info'
