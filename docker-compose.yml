@@ -7,9 +7,36 @@ services:
     ports:
       - "8761:8761"
     restart: always
+  seizure-database:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: seizure_database
+      POSTGRES_USER: seizure_user
+      POSTGRES_PASSWORD: seizure_password
+    ports:
+      - 5432:5432
+  patient-database:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: patient_database
+      POSTGRES_USER: patient_user
+      POSTGRES_PASSWORD: patient_password
+    ports:
+      - 5432:5432
+  treatment-database:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: treatment_database
+      POSTGRES_USER: treatment_user
+      POSTGRES_PASSWORD: treatment_password
+    ports:
+      - 5432:5432
   seizure:
     depends_on:
-    - service-discovery
+      - service-discovery
     build:
       context: ./seizure
     image: seizure:latest
