@@ -7,12 +7,12 @@ services:
     ports:
       - "8761:8761"
     restart: always
-  seizure-info:
+  seizure:
     depends_on:
     - service-discovery
     build:
-      context: ./seizure-info
-    image: seizure-info:latest
+      context: ./seizure
+    image: seizure:latest
     ports:
       - "8082:8082"
     restart: always

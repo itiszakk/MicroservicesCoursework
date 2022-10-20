@@ -6,9 +6,9 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class SeizureInfoApplication {
+public class SeizureApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SeizureInfoApplication.class, args);
+        SpringApplication.run(SeizureApplication.class, args);
     }
 }
