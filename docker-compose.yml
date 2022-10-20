@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  service-discovery:
+    build:
+      context: ./service-discovery
+    image: service-discovery:latest
+    ports:
+      - "8761:8761"
+    restart: always
+  seizure-info:
+    depends_on:
+    - service-discovery
+    build:
+      context: ./seizure-info
+    image: seizure-info:latest
+    ports:
+      - "8082:8082"
+    restart: always
+  gateway:
+    depends_on:
+    - service-discovery
+    build:
+      context: ./gateway
+    image: gateway:latest
+    ports:
+      - "8080:8080"
+    restart: always
