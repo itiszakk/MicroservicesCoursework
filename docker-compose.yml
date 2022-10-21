@@ -1,54 +1,79 @@
 version: '3.9'
+
 services:
+
   service-discovery:
     build:
       context: ./service-discovery
     image: service-discovery:latest
     ports:
-      - "8761:8761"
+      - '8761:8761'
     restart: always
-  seizure-database:
-    image: postgres:15-alpine
-    restart: always
-    environment:
-      POSTGRES_DB: seizure_database
-      POSTGRES_USER: seizure_user
-      POSTGRES_PASSWORD: seizure_password
-    ports:
-      - 5432:5432
+
   patient-database:
     image: postgres:15-alpine
-    restart: always
     environment:
       POSTGRES_DB: patient_database
       POSTGRES_USER: patient_user
       POSTGRES_PASSWORD: patient_password
     ports:
-      - 5432:5432
+      - '5100:5432'
+    restart: always
+
+  seizure-database:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: seizure_database
+      POSTGRES_USER: seizure_user
+      POSTGRES_PASSWORD: seizure_password
+    ports:
+      - '5200:5432'
+    restart: always
+
   treatment-database:
     image: postgres:15-alpine
-    restart: always
     environment:
       POSTGRES_DB: treatment_database
       POSTGRES_USER: treatment_user
       POSTGRES_PASSWORD: treatment_password
     ports:
-      - 5432:5432
-  seizure:
-    depends_on:
-      - service-discovery
-    build:
-      context: ./seizure
-    image: seizure:latest
-    ports:
-      - "8082:8082"
+      - '5300:5432'
     restart: always
+
   gateway:
-    depends_on:
-    - service-discovery
     build:
       context: ./gateway
     image: gateway:latest
     ports:
-      - "8080:8080"
+      - '8080:8080'
     restart: always
+
+  patient:
+    build:
+      context: ./patient
+    image: patient:latest
+    ports:
+      - '8081:8081'
+    restart: always
+    depends_on:
+      - patient-database
+
+  seizure:
+    build:
+      context: ./seizure
+    image: seizure:latest
+    ports:
+      - '8082:8082'
+    restart: always
+    depends_on:
+      - seizure-database
+
+  treatment:
+    build:
+      context: ./treatment
+    image:   treatment:latest
+    ports:
+      - '8083:8083'
+    restart: always
+    depends_on:
+      - treatment-database
