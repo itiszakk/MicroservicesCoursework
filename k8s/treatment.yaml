@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: treatment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: treatment
+  template:
+    metadata:
+      labels:
+        app: treatment
+    spec:
+      containers:
+        - name: app
+          image: venjilin/treatment:latest
+          ports:
+            - containerPort: 8083
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: treatment
+spec:
+  selector:
+    app: treatment
+  ports:
+    - port: 8083
+      targetPort: 8083
+  type: LoadBalancer
+
+    

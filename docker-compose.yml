@@ -20,6 +20,16 @@ services:
       - '5100:5432'
     restart: always
 
+  patient:
+    build:
+      context: ./patient
+    image: venjilin/patient:latest
+    ports:
+      - '8081:8081'
+    restart: always
+    depends_on:
+      - patient-database
+
   seizure-database:
     image: postgres:15-alpine
     environment:
@@ -29,6 +39,16 @@ services:
     ports:
       - '5200:5432'
     restart: always
+
+  seizure:
+    build:
+      context: ./seizure
+    image: venjilin/seizure:latest
+    ports:
+      - '8082:8082'
+    restart: always
+    depends_on:
+      - seizure-database
 
   treatment-database:
     image: postgres:15-alpine
@@ -40,6 +60,16 @@ services:
       - '5300:5432'
     restart: always
 
+  treatment:
+    build:
+      context: ./treatment
+    image:   venjilin/treatment:latest
+    ports:
+      - '8083:8083'
+    restart: always
+    depends_on:
+      - treatment-database
+
   gateway:
     build:
       context: ./gateway
@@ -47,33 +77,3 @@ services:
     ports:
       - '8080:8080'
     restart: always
-
-  patient:
-    build:
-      context: ./patient
-    image: patient:latest
-    ports:
-      - '8081:8081'
-    restart: always
-    depends_on:
-      - patient-database
-
-  seizure:
-    build:
-      context: ./seizure
-    image: seizure:latest
-    ports:
-      - '8082:8082'
-    restart: always
-    depends_on:
-      - seizure-database
-
-  treatment:
-    build:
-      context: ./treatment
-    image:   treatment:latest
-    ports:
-      - '8083:8083'
-    restart: always
-    depends_on:
-      - treatment-database
