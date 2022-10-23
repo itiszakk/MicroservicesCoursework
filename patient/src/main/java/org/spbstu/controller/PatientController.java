@@ -5,7 +5,6 @@ import dto.Patient;
 import dto.Treatment;
 import org.spbstu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 @RestController
 public class PatientController {
@@ -50,25 +48,28 @@ public class PatientController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     void deleteById(@PathVariable int id) {
-        //this.<Treatment>deleteRelatedEntities("treatment", id);
+        deleteRelatedTreatment(id);
+        deleteRelatedSeizure(id);
 
         service.deleteById(id);
     }
 
-    //private <T> void deleteRelatedEntities(String serviceName, int patientId) {
-    //    Class dtoClass = Class<T[]>;
-//
-    //    ResponseEntity<dtoClass> response = restTemplate.getForEntity(
-    //            "http://{service}?patient={id}",
-    //            dtoClass,
-    //            serviceName,
-    //            patientId
-    //    );
-//
-    //    List<Treatment> treatmentList = Arrays.stream(response.getBody()).toList();
-//
-    //    treatmentList.forEach(treatment -> {
-    //        restTemplate.delete("http://treatment/{id}", treatment.getId());
-    //    });
-    //}
+    private <T> void deleteRelatedTreatment(int patientId) {
+        ResponseEntity<Treatment[]> response = restTemplate.getForEntity(
+                "http://treatment?patient={id}",
+                Treatment[].class,
+                patientId
+        );
+
+        List<Treatment> treatmentList = Arrays.asList(response.getBody());
+
+        treatmentList.forEach(treatment -> {
+            restTemplate.delete("http://treatment/{id}", treatment.getId());
+        });
+    }
+
+    // TODO delete related seizure
+    private void deleteRelatedSeizure(int patientId) {
+
+    }
 }
