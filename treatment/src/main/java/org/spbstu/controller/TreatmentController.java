@@ -28,13 +28,12 @@ public class TreatmentController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Treatment add(@RequestBody Treatment treatment) {
-        System.out.println(treatment);
         return service.add(treatment);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteById(Integer id) {
+    public void deleteById(@PathVariable int id) {
         service.deleteById(id);
     }
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 
 @Data
@@ -29,5 +29,5 @@ public class TreatmentEntity {
     private String description;
 
     @Column(name = "treatment_date")
-    private Date treatmentDate;
+    private LocalDate treatmentDate;
 }

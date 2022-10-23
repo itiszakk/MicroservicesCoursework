@@ -1,7 +1,6 @@
 package org.spbstu.service.impl;
 
 import dto.Treatment;
-import org.spbstu.entity.TreatmentEntity;
 import org.spbstu.repository.TreatmentRepository;
 import org.spbstu.service.TreatmentMapper;
 import org.spbstu.service.TreatmentService;
@@ -30,10 +29,7 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     @Override
     public Treatment add(Treatment treatment) {
-        TreatmentEntity entity = repository.save(treatmentMapper.toEntity(treatment));
-        System.out.println(entity);
-
-        return treatmentMapper.toDTO(entity);
+        return treatmentMapper.toDTO(repository.save(treatmentMapper.toEntity(treatment)));
     }
 
     @Override
