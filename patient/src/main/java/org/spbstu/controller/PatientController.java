@@ -1,20 +1,23 @@
 package org.spbstu.controller;
 
-import controller.PatientRequestParameters;
-import dto.Patient;
-import dto.Treatment;
+import org.spbstu.dto.Patient;
 import org.spbstu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
 public class PatientController {
+
+    @Value("${host.treatment}")
+    private String treatmentHost;
+
+    @Value("${host.treatment}")
+    private String seizureHost;
 
     private final PatientService service;
     private final RestTemplate restTemplate;
@@ -28,9 +31,7 @@ public class PatientController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     List<Patient> getAll(PatientRequestParameters parameters) {
-        return (parameters.allEmpty())
-                ? service.getAll()
-                : service.getAll(parameters);
+        return service.getAll(parameters);
     }
 
     @GetMapping("/{id}")
@@ -48,28 +49,11 @@ public class PatientController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     void deleteById(@PathVariable int id) {
-        deleteRelatedTreatment(id);
-        deleteRelatedSeizure(id);
-
+        // Delete patient itself
         service.deleteById(id);
-    }
 
-    private <T> void deleteRelatedTreatment(int patientId) {
-        ResponseEntity<Treatment[]> response = restTemplate.getForEntity(
-                "http://treatment?patient={id}",
-                Treatment[].class,
-                patientId
-        );
-
-        List<Treatment> treatmentList = Arrays.asList(response.getBody());
-
-        treatmentList.forEach(treatment -> {
-            restTemplate.delete("http://treatment/{id}", treatment.getId());
-        });
-    }
-
-    // TODO delete related seizure
-    private void deleteRelatedSeizure(int patientId) {
-
+        // Delete related entities
+        restTemplate.delete(treatmentHost + "?patient={id}", id);
+        restTemplate.delete(seizureHost + "?patient={id}", id);
     }
 }

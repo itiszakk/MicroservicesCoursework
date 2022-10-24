@@ -1,6 +1,6 @@
 package org.spbstu.service;
 
-import dto.Treatment;
+import org.spbstu.dto.Treatment;
 import org.mapstruct.Mapper;
 import org.spbstu.entity.TreatmentEntity;
 

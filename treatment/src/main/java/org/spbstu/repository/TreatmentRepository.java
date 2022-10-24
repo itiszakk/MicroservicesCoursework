@@ -8,5 +8,6 @@ import java.util.List;
 public interface TreatmentRepository
         extends JpaRepository<TreatmentEntity, Integer> {
 
-    List<TreatmentEntity> findByPatientId(Integer patientId);
+    List<TreatmentEntity> findByPatientId(Integer id);
+    void deleteAllByPatientId(Integer id);
 }

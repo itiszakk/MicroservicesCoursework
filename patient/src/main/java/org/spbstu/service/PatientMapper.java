@@ -1,6 +1,6 @@
 package org.spbstu.service;
 
-import dto.Patient;
+import org.spbstu.dto.Patient;
 import org.mapstruct.Mapper;
 import org.spbstu.entity.PatientEntity;
 

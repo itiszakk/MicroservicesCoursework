@@ -1,7 +1,7 @@
 package org.spbstu.service.impl;
 
-import controller.PatientRequestParameters;
-import dto.Patient;
+import org.spbstu.controller.PatientRequestParameters;
+import org.spbstu.dto.Patient;
 import org.spbstu.entity.PatientEntity;
 import org.spbstu.exception.PatientNotFoundException;
 import org.spbstu.repository.PatientRepository;
@@ -25,13 +25,6 @@ public class PatientServiceImpl implements PatientService {
     public PatientServiceImpl(PatientRepository repository, PatientMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
-    }
-
-    @Override
-    public List<Patient> getAll() {
-        return repository.findAll().stream()
-                .map(mapper::toDTO)
-                .toList();
     }
 
     @Override

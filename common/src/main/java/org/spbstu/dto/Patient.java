@@ -1,4 +1,4 @@
-package dto;
+package org.spbstu.dto;
 
 import lombok.Builder;
 import lombok.Data;
