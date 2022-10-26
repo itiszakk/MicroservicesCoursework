@@ -8,7 +8,7 @@ public interface SeizureService {
     List<Seizure> findAll();
     Seizure findById(Integer id);
     List<Seizure> findAllByPatientId(Integer id);
-    Seizure add(Seizure treatment);
+    Seizure add(Seizure seizure);
     void deleteById(Integer id);
     void deleteAllByPatientId(Integer id);
 }

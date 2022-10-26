@@ -16,7 +16,7 @@ public class PatientController {
     @Value("${host.treatment}")
     private String treatmentHost;
 
-    @Value("${host.treatment}")
+    @Value("${host.seizure}")
     private String seizureHost;
 
     private final PatientService service;
