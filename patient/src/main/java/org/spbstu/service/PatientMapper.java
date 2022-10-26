@@ -6,7 +6,6 @@ import org.spbstu.entity.PatientEntity;
 
 @Mapper(componentModel = "spring")
 public interface PatientMapper {
-
     Patient toDTO(PatientEntity entity);
     PatientEntity toEntity(Patient dto);
 }

@@ -3,6 +3,7 @@ package org.spbstu.service.impl;
 import org.spbstu.controller.PatientRequestParameters;
 import org.spbstu.dto.Patient;
 import org.spbstu.entity.PatientEntity;
+import org.spbstu.exception.PatientDTOException;
 import org.spbstu.exception.PatientNotFoundException;
 import org.spbstu.repository.PatientRepository;
 import org.spbstu.service.PatientMapper;
@@ -12,6 +13,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +49,7 @@ public class PatientServiceImpl implements PatientService {
     @Transactional
     @Override
     public Patient save(Patient patient) {
+        checkPatientDTO(patient);
         return mapper.toDTO(repository.save(mapper.toEntity(patient)));
     }
 
@@ -86,5 +90,21 @@ public class PatientServiceImpl implements PatientService {
 
         return (root, query, builder) ->
                 builder.like(root.get(field), "%" + value + "%");
+    }
+
+    private void checkPatientDTO(Patient patient) {
+        if (patient.getLastName() == null || patient.getLastName().length() == 0) {
+            throw new PatientDTOException(Patient.Fields.lastName);
+        }
+
+        if (patient.getFirstName() == null || patient.getFirstName().length() == 0) {
+            throw new PatientDTOException(Patient.Fields.firstName);
+        }
+
+        try {
+            LocalDate.parse(patient.getBirthdate());
+        } catch (NullPointerException | DateTimeParseException e) {
+            throw new PatientDTOException(Patient.Fields.birthdate);
+        }
     }
 }

@@ -2,15 +2,15 @@ package org.spbstu.dto;
 
 import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDate;
+import lombok.experimental.FieldNameConstants;
 
 @Data
 @Builder
+@FieldNameConstants
 public class Patient {
-    private final Integer id;
+    private final int id;
     private final String lastName;
     private final String firstName;
     private final String patronymic;
-    private final LocalDate birthdate;
+    private final String birthdate;
 }

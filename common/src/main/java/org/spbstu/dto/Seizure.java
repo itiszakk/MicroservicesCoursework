@@ -7,9 +7,9 @@ import lombok.experimental.FieldNameConstants;
 @Data
 @Builder
 @FieldNameConstants
-public class Treatment {
+public class Seizure {
     private final int id;
     private final int patientId;
     private final String description;
-    private final String treatmentDate;
+    private final String seizureDate;
 }

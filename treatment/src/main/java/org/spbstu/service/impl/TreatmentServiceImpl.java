@@ -2,6 +2,7 @@ package org.spbstu.service.impl;
 
 import org.spbstu.dto.Treatment;
 import org.spbstu.entity.TreatmentEntity;
+import org.spbstu.exception.TreatmentDTOException;
 import org.spbstu.exception.TreatmentNotFoundException;
 import org.spbstu.repository.TreatmentRepository;
 import org.spbstu.service.TreatmentMapper;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +51,7 @@ public class TreatmentServiceImpl implements TreatmentService {
     @Transactional
     @Override
     public Treatment add(Treatment treatment) {
+        checkTreatmentDTO(treatment);
         return treatmentMapper.toDTO(repository.save(treatmentMapper.toEntity(treatment)));
     }
 
@@ -66,5 +71,21 @@ public class TreatmentServiceImpl implements TreatmentService {
     @Override
     public void deleteAllByPatientId(Integer id) {
         repository.deleteAllByPatientId(id);
+    }
+
+    private void checkTreatmentDTO(Treatment treatment) {
+        if (treatment.getPatientId() == 0) {
+            throw new TreatmentDTOException(Treatment.Fields.patientId);
+        }
+
+        if (treatment.getDescription() == null || treatment.getDescription().length() == 0) {
+            throw new TreatmentDTOException(Treatment.Fields.description);
+        }
+
+        try {
+            LocalDate.parse(treatment.getTreatmentDate());
+        } catch (NullPointerException | DateTimeParseException e) {
+            throw new TreatmentDTOException(Treatment.Fields.treatmentDate);
+        }
     }
 }

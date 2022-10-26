@@ -1,6 +1,8 @@
 package org.spbstu.service.impl;
 
+import org.spbstu.dto.Seizure;
 import org.spbstu.entity.SeizureEntity;
+import org.spbstu.exception.SeizureDTOException;
 import org.spbstu.exception.SeizureNotFoundException;
 import org.spbstu.repository.SeizureRepository;
 import org.spbstu.service.SeizureMapper;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +49,7 @@ public class SeizureServiceImpl implements SeizureService {
     @Transactional
     @Override
     public Seizure add(Seizure seizure) {
+        checkSeizureDTO(seizure);
         return seizureMapper.toDto(repository.save(seizureMapper.toEntity(seizure)));
     }
 
@@ -64,5 +69,21 @@ public class SeizureServiceImpl implements SeizureService {
     @Override
     public void deleteAllByPatientId(Integer id) {
         repository.deleteAllByPatientId(id);
+    }
+
+    private void checkSeizureDTO(Seizure seizure) {
+        if (seizure.getPatientId() == 0) {
+            throw new SeizureDTOException(Seizure.Fields.patientId);
+        }
+
+        if (seizure.getDescription() == null || seizure.getDescription().length() == 0) {
+            throw new SeizureDTOException(Seizure.Fields.description);
+        }
+
+        try {
+            LocalDate.parse(seizure.getSeizureDate());
+        } catch (NullPointerException | DateTimeParseException e) {
+            throw new SeizureDTOException(Seizure.Fields.seizureDate);
+        }
     }
 }

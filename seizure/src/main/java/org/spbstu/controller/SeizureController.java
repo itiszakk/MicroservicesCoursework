@@ -1,5 +1,6 @@
 package org.spbstu.controller;
 
+import org.spbstu.dto.Seizure;
 import org.spbstu.service.SeizureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 public class SeizureController {
+
     private final SeizureService service;
 
     @Autowired
