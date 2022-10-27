@@ -3,6 +3,7 @@ package org.spbstu.controller;
 import org.spbstu.dto.Patient;
 import org.spbstu.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class PatientController {
     private String seizureHost;
 
     private final PatientService service;
+    @Qualifier("restTemplate")
     private final RestTemplate restTemplate;
 
     @Autowired

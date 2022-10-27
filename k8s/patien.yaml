@@ -15,6 +15,9 @@ spec:
       containers:
         - name: patient
           image: venjilin/patient:latest
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: k8s
           ports:
             - containerPort: 8081
         - name: patient-database

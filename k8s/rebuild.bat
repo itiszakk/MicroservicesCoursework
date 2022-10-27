@@ -1,3 +1,4 @@
+docker system prune -f
 kubectl delete -f .\gateway.yaml -f .\treatment.yaml -f .\patien.yaml -f .\seizure.yaml
 cd ../patient
 docker build -t venjilin/patient:latest .
