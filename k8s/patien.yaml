@@ -1,44 +1,44 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: treatment
+  name: patient
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: treatment
+      app: patient
   template:
     metadata:
       labels:
-        app: treatment
+        app: patient
     spec:
       containers:
-        - name: treatment
-          image: venjilin/treatment:latest
+        - name: patient
+          image: venjilin/patient:latest
           ports:
-            - containerPort: 8083
-        - name: treatment-database
+            - containerPort: 8081
+        - name: patient-database
           image: postgres:15-alpine
           env:
             - name: POSTGRES_DB
-              value: treatment_database
+              value: patient_database
             - name: POSTGRES_USER
-              value: treatment_user
+              value: patient_user
             - name: POSTGRES_PASSWORD
-              value: treatment_password
+              value: patient_password
           ports:
             - containerPort: 5432
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: treatment
+  name: patient
 spec:
   selector:
-    app: treatment
+    app: patient
   ports:
     - port: 80
-      targetPort: 8083
+      targetPort: 8081
   type: LoadBalancer
 
     

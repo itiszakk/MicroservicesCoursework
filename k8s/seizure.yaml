@@ -1,44 +1,44 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: treatment
+  name: seizure
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: treatment
+      app: seizure
   template:
     metadata:
       labels:
-        app: treatment
+        app: seizure
     spec:
       containers:
-        - name: treatment
-          image: venjilin/treatment:latest
+        - name: seizure
+          image: venjilin/seizure:latest
           ports:
-            - containerPort: 8083
-        - name: treatment-database
+            - containerPort: 8082
+        - name: seizure-database
           image: postgres:15-alpine
           env:
             - name: POSTGRES_DB
-              value: treatment_database
+              value: seizure_database
             - name: POSTGRES_USER
-              value: treatment_user
+              value: seizure_user
             - name: POSTGRES_PASSWORD
-              value: treatment_password
+              value: seizure_password
           ports:
             - containerPort: 5432
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: treatment
+  name: seizure
 spec:
   selector:
-    app: treatment
+    app: seizure
   ports:
     - port: 80
-      targetPort: 8083
+      targetPort: 8082
   type: LoadBalancer
 
     
